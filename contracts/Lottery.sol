@@ -22,7 +22,7 @@ contract lottery {
         received[msg.sender] = true;
     }
 
-    function getBalamce() public view returns (uint) {
+    function getBalance() public view returns (uint) {
         require(msg.sender == manager);
         //returns balance in wei
         return address(this).balance;
@@ -40,5 +40,31 @@ contract lottery {
                     )
                 )
             );
+    }
+
+    function pickWinner() public {
+        // only the manager can pick a winner if there are at least 3 players in the lottery
+        require(msg.sender == manager);
+        require(players.length >= 3);
+
+        uint r = random();
+        address payable winner;
+
+        // computing a random index of the array
+        uint index = r % players.length;
+
+        winner = players[index]; // this is the winner
+
+        uint managerFee = (getBalance() * 10) / 100; // manager fee is 10%
+        uint winnerPrize = (getBalance() * 90) / 100; // winner prize is 90%
+
+        // transferring 90% of contract's balance to the winner
+        winner.transfer(winnerPrize);
+
+        // transferring 10% of contract's balance to the manager
+        payable(manager).transfer(managerFee);
+
+        // resetting the lottery for the next round
+        players = new address payable[](0);
     }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-contract lottery {
+contract LotteryContract {
     //declare the state variables
     address payable[] public players;
     address public manager;
@@ -12,7 +12,9 @@ contract lottery {
         manager = msg.sender;
     }
 
+    //function to recieve ether
     receive() external payable {
+        //the manager is not permited to send ether
         require(msg.sender != manager);
         require(msg.value == 0.1 ether);
 

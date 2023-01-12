@@ -1,5 +1,7 @@
 # Lottery Smart-Contract
 
-To be updated soon
+To be updated soon..
+
+---
 
 
